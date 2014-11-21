@@ -16,6 +16,39 @@ describe('sigfig', function() {
     });
   });
   
+  describe('stringify', function() {
+    it('should stringify a list of transaction alert in correct format', function(done) {
+      transactions = [
+        "2014-11-20,SELL,YHOO",
+        "2014-11-17,BUY,YHOO",
+      ];
+      transactions = transactions.map(sigfig.parseTransaction);
+      var data = sigfig.processTransactions(transactions);
+      var stringifyData = sigfig.stringify(data);
+      stringifyData.length.should.equal(0);
+      
+      transactions = [
+        "2014-11-20,SELL,YHOO",
+        "2014-11-17,SELL,YHOO",
+      ];
+      transactions = transactions.map(sigfig.parseTransaction);
+      var data = sigfig.processTransactions(transactions);
+      var stringifyData = sigfig.stringify(data);
+      stringifyData[0].should.equal('2,SELL,YHOO');
+      
+      transactions = [
+        "2014-11-20,BUY,YHOO",
+        "2014-11-17,BUY,YHOO",
+      ];
+      transactions = transactions.map(sigfig.parseTransaction);
+      var data = sigfig.processTransactions(transactions);
+      var stringifyData = sigfig.stringify(data);
+      stringifyData[0].should.equal('2,BUY,YHOO');
+      
+      done();
+    });
+  });
+  
   describe('net count', function() {
     it('should calculate net count correctly', function(done) {
       
